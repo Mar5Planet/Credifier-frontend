@@ -100,6 +100,25 @@ Navigation Bar */
     padding: 5% 100px;
 }
 
+/* Article Cards */
+
+.row {
+    padding: 5%;
+    justify-content: center;
+}
+.card {
+    width: fit-content;
+    height: 310px;
+    overflow: hidden;
+    margin: 2%;
+    
+}
+
+.card img {
+    width: 100%;
+    height: auto;
+    margin-top: 4%;
+}
 
 
 /* Footer Section */
