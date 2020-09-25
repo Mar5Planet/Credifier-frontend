@@ -1,0 +1,154 @@
+* {
+    font-family: 'Source Sans Pro', sans-serif;
+}
+/* 
+Navigation Bar */
+
+.navbar {
+    padding: 1% 10%;
+    background-color: #000000 !important;
+}
+
+.navbar-brand {
+    font-family: pacifico, sans-serif;
+    font-size: 1.5rem;
+}
+
+.navbar-nav {
+    width: 10%;
+}
+.nav-link {
+    margin-right: 5% !important;
+    font-size: 1.2rem;   
+    margin-left: 20px;
+}
+
+.nav-links {
+    margin-left: 100px;
+}
+
+.navbarnav .btn {
+    margin-left: 10px;
+}
+
+/* Info Div  */
+
+#info-div {
+    padding: 5% 100px;
+    background-color: #184d47;
+    text-align: center;
+}
+
+#discussion-text {
+    color: white;
+    font-size: 1.2rem;
+    display: inline;
+    font-weight: 700;
+}
+
+#discussion-text span {
+    color: black;
+    margin-left: 1%;
+}
+
+.info-btns {
+    display: inline;
+    padding: 2%;
+}
+
+.info-btns .btn {
+    margin-left: 2%;
+    font-size: 0.8rem;
+    height: 40px;
+    padding: 10px 20px;
+}
+
+.info-btns .btn-dark {
+    background-color: #1a1c20 !important;
+}
+
+.info-btns .btn2 {
+    height: 38px;
+    font-weight: bold;
+}
+
+/* Main Section */
+
+#main {
+    background-color: #f4f4f4;
+}
+
+#drop-drowns {
+    text-align: center;
+    padding: 2%;
+}
+
+.dropdown {
+    display: inline;
+    text-align: center;
+
+}
+
+.dropdown .dropdown-toggle {
+    color: #757575;
+    font-weight: 700;
+    font-size: 1.2rem;
+    
+}
+
+.articles {
+    padding: 5% 100px;
+}
+
+
+
+/* Footer Section */
+.footer-container {
+    background-color:black;
+    color: white;
+    padding: 3% 10% 0%;
+    display: grid;
+    grid-template-columns: 0.25fr 0.35fr 0.4fr;
+}
+  
+.logo-icons {
+  margin-left:5%;
+}
+.logo-icons h2{
+  margin-bottom: 8%;
+}
+ 
+  
+.socialmedia-icons a{
+    margin-right: 3%;
+}
+.info ul {
+    display: inline-block;
+    margin-right: 13%;
+    list-style-type: none;
+    line-height: 2.2rem;
+}
+  
+.info ul li a {
+    color: inherit;
+}
+  
+.info ul li a:hover {
+  color: #184d47;
+  text-decoration: none;
+  
+}
+  
+.footer-btn {
+    text-align: right;
+}
+.footer-btn h6 {
+    padding: 6% 0;
+    color: hsl(233, 8%, 62%);
+}
+
+.footer-btn .btn {
+    font-weight: 700;
+    font-size: 1rem;
+}
+  
