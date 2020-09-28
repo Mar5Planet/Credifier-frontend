@@ -108,16 +108,37 @@ Navigation Bar */
 }
 .card {
     width: fit-content;
-    height: 310px;
+    height: 270px;
     overflow: hidden;
     margin: 2%;
+    padding: 0;
     
+}
+
+.card:hover {
+    cursor: pointer;
+    color: #184d47;
 }
 
 .card img {
     width: 100%;
     height: auto;
-    margin-top: 4%;
+}
+
+.card-title {
+    width: 15ch;
+    overflow: hidden;
+    white-space: nowrap;
+    display: inline-flex;
+    font-weight: 600;
+}
+
+.card-text {
+    width: 20ch;
+    overflow: hidden;
+    white-space: nowrap;
+    display: inline-flex;
+
 }
 
 

@@ -11,11 +11,12 @@ document.addEventListener('DOMContentLoaded', (event) => {
     renderArticle = article => {
         const articleDiv = document.createElement('div')
         const contentContainer = document.querySelector('.row')
-        articleDiv.className = 'card col-lg-3'
+        articleDiv.className = 'card col-lg-3 col-sm-4'
+        articleDiv.dataset.topic = article.topic
         articleDiv.innerHTML = `
         <img src=" ${article.image_url}"> 
             <div class="card-body">
-                <h5 class="card-title"><a id="${article.id}"> ${article.title}</a> </h5>
+                <h5 class="card-title" id="${article.id}"> ${article.title} </h5><span> ...</span>
                 <p class="card-text">${article.reporter} </p>
             </div>
         
