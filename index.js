@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
     const fetchSpecificArticle = articleId => {
         fetch(baseUrl + 'posts/' + articleId)
         .then(res => res.json())
-        .then(data => renderSpecificArticle(data))
+        .then(data => renderSpecificArticle(data["data"]["attributes"]))
     }
 
     const fetchArticleByTopic = topic => {
@@ -67,8 +67,40 @@ document.addEventListener('DOMContentLoaded', (event) => {
         
         </div>
         `
+    const articleForm = document.createElement('div')
+    articleForm.className = 'review-form-div'
+    articleForm.innerHTML = `
+    <form class="review-form">
+    <h1> Review Article: </h1>
+
+    <div class="form-group">
+    <label for="articleFormTextarea">Example textarea</label>
+    <textarea class="form-control" id="articleFormTextarea" rows="3"></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary mb-2">Confirm identity</button>
+    </form>
+    `
+    contentContainer.appendChild(articleForm)
+
+    const articleReviewsDiv = document.createElement('div')
+    articleReviewsDiv.className = 'reviews-div'
     
+    
+    for (i = 0; i < article.reviews.length; i++) {
+        const review = document.createElement('div')
+        review.innerHTML = `
+        <div class="media">
+        <img src="${article.users[i].image_url}" class="mr-3" alt="...">
+        <div class="media-body">
+        <h5 class="mt-0" data-id="${article.users[i].id}">${article.users[i].username}</h5>
+        ${article.reviews[i].text}
+        </div>
+        </div>
+        `
+        articleReviewsDiv.appendChild(review)
     }
+    contentContainer.appendChild(articleReviewsDiv)
+}
 
     const changeActive = activeBtn => {
         const activeElements = document.querySelectorAll('.active')
@@ -83,7 +115,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
             if(e.target.parentNode.matches('.card')){
                 const cardDiv = e.target.parentNode
                 articleId = cardDiv.getAttribute('data-id')
-                
+                console.log(articleId)
                 fetchSpecificArticle(articleId)
                 
 
@@ -132,11 +164,3 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
 
 });
-
-/* <div class="media">
-  <img src="" class="mr-3" alt="...">
-  <div class="media-body">
-    <h5 class="mt-0">Media heading</h5>
-    Cras sit amet nibh libero, in gravida n
-    </div>
-</div> */
