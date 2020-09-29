@@ -70,7 +70,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
         </div> 
         <h1> ${article.title} </h1>
-        <p class="article-content"> ${article.content} </p>
+        <p class="article-content"> ${article.content.substring(0,190)}... <a href="${article.source}">Full Article</a> </p>
         
         </div>
         `
@@ -78,10 +78,10 @@ document.addEventListener('DOMContentLoaded', (event) => {
     articleForm.className = 'review-form-div'
     articleForm.innerHTML = `
     <form class="review-form" data-id="${article.id}">
-    <h1> Review Article: </h1>
+    <h1> Article Reviews </h1>
 
     <div class="form-group">
-    <label for="articleFormTextarea">Example textarea</label>
+    <label for="articleFormTextarea">Write a review:</label>
     <textarea class="form-control" id="articleFormTextarea" rows="3"></textarea>
     </div>
     <button type="submit" class="btn btn-primary mb-2">Submit Review</button>
@@ -95,18 +95,20 @@ document.addEventListener('DOMContentLoaded', (event) => {
     
     for (i = 0; i < article.reviews.length; i++) {
         const review = document.createElement('div')
+        review.className = "media"
         review.innerHTML = `
-        <div class="media">
+        
         <img src="${article.users[i].image_url}" class="${article.users[i].ranking} user-img mr-3" alt="...">
         <div class="media-body">
         <h5 class="mt-0" data-id="${article.users[i].id}">${article.users[i].username}</h5>
         <p>${article.reviews[i].text}</p>
-        <div class="vote-btns">
-            <i class="up-vote fas fa-sort-up"></i>
-            <i class="down-vote fas fa-sort-down"></i>
-        </div>
-        </div>
         
+        
+        
+        </div>
+        <div class="vote-btns">
+            <i class="up-vote fas fa-2x fa-sort-up"></i>
+            <i class="down-vote fas fa-2x fa-sort-down"></i>
         </div>
         `
         articleReviewsDiv.appendChild(review)
@@ -185,6 +187,10 @@ document.addEventListener('DOMContentLoaded', (event) => {
                 
             }
 
+            else if(e.target.matches('.login-btn')) {
+                loginPage()
+            }
+
 
         })
     }
@@ -213,3 +219,29 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
 
 });
+
+
+const loginPage = () => {
+    const contentContainer = document.querySelector('.row')
+    contentContainer.innerHTML = `
+    <div class="wrapper fadeInDown">
+  <div id="formContent">
+    <div class="fadeIn first">
+        <a class="navbar-brand" href="#">Credifier</a>
+    </div>
+
+ 
+    <form>
+      <input type="text" id="login" class="fadeIn second" name="login" placeholder="login">
+      <input type="text" id="password" class="fadeIn third" name="login" placeholder="password">
+      <input type="submit" class="fadeIn fourth" value="Log In">
+    </form>
+
+    <div id="formFooter">
+      <a class="underlineHover" href="#">Forgot Password?</a>
+    </div>
+
+  </div>
+</div>
+    `
+}
