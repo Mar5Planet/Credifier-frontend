@@ -206,6 +206,36 @@ Navigation Bar */
 .article-card i {
     margin: 2%;
 }
+
+/* Review Section */
+.reviews-div {
+    display: block;
+    width: 100%;
+    padding: 10%;
+}
+
+.media-body h5{
+    font-weight: bold;
+}
+.user-img {
+    border-radius: 100%;
+    width: 100px;
+    height: auto;
+}
+.green {
+    
+    border: 10px solid green;
+}
+
+.red {
+
+    border: 10px solid red;
+}
+
+.yellow {
+    
+    border: 10px solid yellow;
+}
 /* Footer Section */
 .footer-container {
     background-color:black;

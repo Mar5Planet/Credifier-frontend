@@ -1,6 +1,10 @@
 document.addEventListener('DOMContentLoaded', (event) => {
     console.log('DOM fully loaded and parsed');
     //const cards = document.getElementsByClassName("card")
+    let userLoggedIn = false;
+    let demoUser = {
+        "id": "1"
+    }
 
     baseUrl = 'http://localhost:3000/'
     const fetchArticles = () => {
@@ -45,6 +49,9 @@ document.addEventListener('DOMContentLoaded', (event) => {
         })
     }
 
+
+
+
     const renderSpecificArticle = article => {
         const contentContainer = document.querySelector('.row')
         contentContainer.innerHTML = `
@@ -70,14 +77,14 @@ document.addEventListener('DOMContentLoaded', (event) => {
     const articleForm = document.createElement('div')
     articleForm.className = 'review-form-div'
     articleForm.innerHTML = `
-    <form class="review-form">
+    <form class="review-form" data-id="${article.id}">
     <h1> Review Article: </h1>
 
     <div class="form-group">
     <label for="articleFormTextarea">Example textarea</label>
     <textarea class="form-control" id="articleFormTextarea" rows="3"></textarea>
     </div>
-    <button type="submit" class="btn btn-primary mb-2">Confirm identity</button>
+    <button type="submit" class="btn btn-primary mb-2">Submit Review</button>
     </form>
     `
     contentContainer.appendChild(articleForm)
@@ -90,17 +97,43 @@ document.addEventListener('DOMContentLoaded', (event) => {
         const review = document.createElement('div')
         review.innerHTML = `
         <div class="media">
-        <img src="${article.users[i].image_url}" class="mr-3" alt="...">
+        <img src="${article.users[i].image_url}" class="${article.users[i].ranking} user-img mr-3" alt="...">
         <div class="media-body">
         <h5 class="mt-0" data-id="${article.users[i].id}">${article.users[i].username}</h5>
-        ${article.reviews[i].text}
+        <p>${article.reviews[i].text}</p>
+        <div class="vote-btns">
+            <i class="up-vote fas fa-sort-up"></i>
+            <i class="down-vote fas fa-sort-down"></i>
         </div>
+        </div>
+        
         </div>
         `
         articleReviewsDiv.appendChild(review)
     }
     contentContainer.appendChild(articleReviewsDiv)
 }
+
+    const addReview = (postId, userId, text) => {
+        const options = {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+        
+            },
+            body: JSON.stringify({
+                "text": text,
+                "user_id": userId,
+                "post_id": postId,
+            })
+        }
+        fetch(baseUrl + 'reviews', options)
+        .then(resp => resp.json())
+        .then(newReview => console.log(newReview))
+        .catch(error => console.log(error))
+        
+    }
 
     const changeActive = activeBtn => {
         const activeElements = document.querySelectorAll('.active')
@@ -152,13 +185,29 @@ document.addEventListener('DOMContentLoaded', (event) => {
                 
             }
 
+
+        })
+    }
+
+    const documentSubmit = () => {
+        document.addEventListener('submit', e => {
+            e.preventDefault();
+            const reviewText = document.querySelector('.form-control').value
+            const userId= demoUser.id
+            const postId = e.target.getAttribute("data-id")
+            addReview(postId, demoUser.id, reviewText)
+            console.log(userId, postId, reviewText)
+            fetchSpecificArticle(postId)
+        
+
         })
     }
 
 
-
+    
  
     fetchArticles()
+    documentSubmit()
     documentClick()
 
 
