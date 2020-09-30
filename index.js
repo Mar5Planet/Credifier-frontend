@@ -106,6 +106,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
     for (i = 0; i < article.reviews.length; i++) {
         const review = document.createElement('div')
         review.className = "media"
+        review.dataset.id = article.reviews[i].id
         review.innerHTML = `
         
         <img src="${article.users[i].image_url}" class="${article.users[i].ranking} user-img mr-3" alt="...">
@@ -144,6 +145,27 @@ document.addEventListener('DOMContentLoaded', (event) => {
         let data = await response.json()
         fetchSpecificArticle(postId)
         return data;
+    }
+
+    async function createRating(score, raterId, reviewId, postId) {
+        const options = {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+        
+            },
+            body: JSON.stringify({
+                score,
+                "rater_id": raterId,
+                "review_id": reviewId
+            })
+        }
+        
+        let response = await fetch(baseUrl + 'ratings', options);
+        let data = await response.json()
+        fetchSpecificArticle(postId)
+        console.log(data);
     }
 
     const isLoggedIn = () => {
@@ -247,11 +269,13 @@ const loginPage = () => {
             }
 
             else if(e.target.matches('.up-vote')){
-                incrementScore()
+                const reviewId = e.target.parentNode.parentNode.getAttribute("data-id")
+                addScore(10, reviewId)
             }
 
             else if(e.target.matches('.down-vote')){
-                decrementScore()
+                const reviewId = e.target.parentNode.parentNode.getAttribute("data-id")
+                addScore(10, reviewId)
             }
             else if(e.target.matches('.logout-btn')) {
                 isLoggedIn()
@@ -259,6 +283,13 @@ const loginPage = () => {
                 
             }
         })
+    }
+
+    const addScore = (score, reviewId) => {
+        const raterId = demoUser.id 
+        const postId = document.querySelector('.review-form').getAttribute("data-id")        
+        
+        createRating(score, raterId, reviewId, postId)
     }
 
     const documentSubmit = () => {
@@ -284,27 +315,27 @@ const loginPage = () => {
         })
     }
 
-///// edit score functions
-async function editScore(score){
-    const options = {
-        method:"PUT",
-        body: JSON.stringify(score)
-    }
-    let response = await fetch(baseUrl + "users/" + user_id, options)
-    let data = await response.json
-    return data
-}
+// ///// edit score functions
+// async function editScore(score, raterId, reviewId){
+//     const options = {
+//         method:"POST",
+//         body: JSON.stringify(score)
+//     }
+//     let response = await fetch(baseUrl + "users/" + user_id, options)
+//     let data = await response.json
+//     return data
+// }
 
-const incrementScore = () => {
-    score +=1
-    editScore(score)
-}
+// const incrementScore = (score) => {
+//     score +=1
+//     editScore(score)
+// }
 
-const decrementScore  = () => {
-    score -=1
-    editScore(score)
-}
-/////////
+// const decrementScore  = (score) => {
+//     score -=1
+//     editScore(score)
+// }
+// /////////
 
     
     const homePage = () => {
