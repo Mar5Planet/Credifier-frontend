@@ -50,6 +50,8 @@ document.addEventListener('DOMContentLoaded', (event) => {
         })
     }
 
+
+
     const renderSpecificArticle = article => {
         const contentContainer = document.querySelector('.row')
         contentContainer.innerHTML = `
@@ -74,6 +76,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
         `
     const articleForm = document.createElement('div')
     articleForm.className = 'review-form-div'
+    if (userLoggedIn === true) {
     articleForm.innerHTML = `
     <form class="review-form" data-id="${article.id}">
     <h1> Article Reviews </h1>
@@ -81,10 +84,19 @@ document.addEventListener('DOMContentLoaded', (event) => {
     <div class="form-group">
     <label for="articleFormTextarea">Write a review:</label>
     <textarea class="form-control" id="articleFormTextarea" rows="3"></textarea>
-    </div>
+    
     <button type="submit" class="btn btn-primary mb-2">Submit Review</button>
+    </div>
     </form>
     `
+    }
+
+    else {
+        articleForm.innerHTML = `
+        <form class="review-form" data-id="${article.id}">
+    <h1> Article Reviews </h1>
+    </form>`
+    }
     contentContainer.appendChild(articleForm)
 
     const articleReviewsDiv = document.createElement('div')
@@ -113,8 +125,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
     }
     contentContainer.appendChild(articleReviewsDiv)
 }
-
-    const addReview = (postId, userId, text) => {
+    async function addReview(postId, userId, text) {
         const options = {
             method: "POST",
             headers: {
@@ -128,11 +139,34 @@ document.addEventListener('DOMContentLoaded', (event) => {
                 "post_id": postId,
             })
         }
-        fetch(baseUrl + 'reviews', options)
-        .then(resp => resp.json())
-        .then(newReview => console.log(newReview))
-        .catch(error => console.log(error))
         
+        let response = await fetch(baseUrl + 'reviews', options);
+        let data = await response.json()
+        fetchSpecificArticle(postId)
+        return data;
+    }
+
+    const isLoggedIn = () => {
+        const loginBtn = document.querySelector('.login-btn')
+        const signupBtn = document.querySelector('.signup-btn')
+        const logoutBtn = document.querySelector('.logout-btn')
+        const infoDiv = document.querySelector('#info-div')
+        
+        if (userLoggedIn === false) {
+            loginBtn.classList.add('hide')
+            signupBtn.classList.add('hide')
+            logoutBtn.classList.remove('hide')
+            infoDiv.classList.add('hide')
+            userLoggedIn = true;
+        }
+        else if (userLoggedIn === true) {
+            loginBtn.classList.remove('hide')
+            signupBtn.classList.remove('hide')
+            logoutBtn.classList.add('hide')
+            infoDiv.classList.remove('hide')
+            userLoggedIn = false;
+        }
+
     }
 
     const changeActive = activeBtn => {
@@ -141,6 +175,33 @@ document.addEventListener('DOMContentLoaded', (event) => {
         activeElements.forEach(element => {element.classList.remove('active')})
         activeBtn.classList.add('active')
     }
+
+
+const loginPage = () => {
+    const contentContainer = document.querySelector('.row')
+    
+    contentContainer.innerHTML = `
+    <div class="wrapper fadeInDown">
+  <div id="formContent">
+    <div class="fadeIn first">
+        <a class="navbar-brand" href="#">Credifier</a>
+    </div>
+
+ 
+    <form id="login-form">
+      <input type="text" id="login" class="fadeIn second" name="login" placeholder="login">
+      <input type="text" id="password" class="fadeIn third" name="login" placeholder="password">
+      <input type="submit" class="fadeIn fourth" value="Log In">
+    </form>
+
+    <div id="formFooter">
+      <a class="underlineHover" href="#">Forgot Password?</a>
+    </div>
+
+  </div>
+</div>
+    `
+}
     
     const documentClick = () => {
         document.addEventListener('click', e => {
@@ -192,20 +253,32 @@ document.addEventListener('DOMContentLoaded', (event) => {
             else if(e.target.matches('.down-vote')){
                 decrementScore()
             }
-
-
+            else if(e.target.matches('.logout-btn')) {
+                isLoggedIn()
+                homePage()
+                
+            }
         })
     }
 
     const documentSubmit = () => {
         document.addEventListener('submit', e => {
             e.preventDefault();
-            const reviewText = document.querySelector('.form-control').value
-            const userId= demoUser.id
-            const postId = e.target.getAttribute("data-id")
-            addReview(postId, demoUser.id, reviewText)
-            console.log(userId, postId, reviewText)
-            fetchSpecificArticle(postId)
+
+            if (e.target.matches('.review-form')) {
+                const reviewText = document.querySelector('.form-control').value
+                const userId= demoUser.id
+                const postId = e.target.getAttribute("data-id")
+                addReview(postId, demoUser.id, reviewText)
+                
+            
+            }
+            
+            if (e.target.matches("#login-form")) {
+                isLoggedIn()
+                homePage()
+
+            }
         
 
         })
@@ -234,34 +307,15 @@ const decrementScore  = () => {
 /////////
 
     
+    const homePage = () => {
+        const contentContainer = document.querySelector('.row')
+        contentContainer.innerHTML = ``
+        fetchArticles()
+    }
+    
  
     fetchArticles()
     documentSubmit()
     documentClick()
 });
 
-
-const loginPage = () => {
-    const contentContainer = document.querySelector('.row')
-    contentContainer.innerHTML = `
-    <div class="wrapper fadeInDown">
-  <div id="formContent">
-    <div class="fadeIn first">
-        <a class="navbar-brand" href="#">Credifier</a>
-    </div>
-
- 
-    <form>
-      <input type="text" id="login" class="fadeIn second" name="login" placeholder="login">
-      <input type="text" id="password" class="fadeIn third" name="login" placeholder="password">
-      <input type="submit" class="fadeIn fourth" value="Log In">
-    </form>
-
-    <div id="formFooter">
-      <a class="underlineHover" href="#">Forgot Password?</a>
-    </div>
-
-  </div>
-</div>
-    `
-}
