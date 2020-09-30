@@ -14,6 +14,32 @@ document.addEventListener('DOMContentLoaded', (event) => {
         .then(data => renderArticles(data))
     }
 
+    const checkRatings = (raterId, reviewId, score) => {
+        fetch(baseUrl + 'ratings')
+        .then(res => res.json())
+        .then(data => findRating(data, raterId, reviewId, score))
+    }
+
+    const findRating = (ratings, raterId, reviewId, score) => {
+        let matchArr = 0
+        for(let i=0; i<ratings.length; i++){
+            let valueArr = Object.values(ratings[i])
+
+            if (valueArr[2] == raterId && valueArr[3] == reviewId) {
+                matchArr = valueArr
+            }
+        }
+
+        if (matchArr == 0) {
+            createRating(score, raterId, reviewId)
+        }
+        else {
+            console.log('instance found-patch score here')
+            console.log(matchArr)
+        }
+
+    }
+    
     const fetchSpecificArticle = articleId => {
         fetch(baseUrl + 'posts/' + articleId)
         .then(res => res.json())
@@ -117,7 +143,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
         
         
         </div>
-        <div class="vote-btns">
+        <div class="vote-btns" data-id="${article.custom_reviews[i].review_rating}">
             <i class="up-vote fas fa-2x fa-sort-up"></i>
             <i class="down-vote fas fa-2x fa-sort-down"></i>
         </div>
@@ -147,7 +173,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
         return data;
     }
 
-    async function createRating(score, raterId, reviewId, postId) {
+    async function createRating(score, raterId, reviewId) {
         const options = {
             method: "POST",
             headers: {
@@ -162,10 +188,16 @@ document.addEventListener('DOMContentLoaded', (event) => {
             })
         }
         
+
         let response = await fetch(baseUrl + 'ratings', options);
         let data = await response.json()
-        fetchSpecificArticle(postId)
         console.log(data);
+
+        if (data.rater_id[0]) {
+            alert(data.rater_id[0])
+        }
+
+        // fetchSpecificArticle(postId)
     }
 
     const isLoggedIn = () => {
@@ -289,7 +321,8 @@ const loginPage = () => {
         const raterId = demoUser.id 
         const postId = document.querySelector('.review-form').getAttribute("data-id")        
         
-        createRating(score, raterId, reviewId, postId)
+       checkRatings(raterId, reviewId, score)
+        
     }
 
     const documentSubmit = () => {
@@ -345,8 +378,13 @@ const loginPage = () => {
     }
     
  
+
+    
     fetchArticles()
     documentSubmit()
     documentClick()
+    // checkRatings(raterId, reviewId)
+
+    
 });
 
