@@ -1,3 +1,4 @@
+// console.log('DOM fully loaded and parsed');
 document.addEventListener('DOMContentLoaded', (event) => {
     console.log('DOM fully loaded and parsed');
     //const cards = document.getElementsByClassName("card")
@@ -48,9 +49,6 @@ document.addEventListener('DOMContentLoaded', (event) => {
             renderArticle(article)
         })
     }
-
-
-
 
     const renderSpecificArticle = article => {
         const contentContainer = document.querySelector('.row')
@@ -181,14 +179,18 @@ document.addEventListener('DOMContentLoaded', (event) => {
                 contentContainer.innerHTML= ``
                 fetchArticleByTopic('sports')
                 changeActive(e.target)
-               
-                
-                
-                
             }
 
             else if(e.target.matches('.login-btn')) {
                 loginPage()
+            }
+
+            else if(e.target.matches('.up-vote')){
+                incrementScore()
+            }
+
+            else if(e.target.matches('.down-vote')){
+                decrementScore()
             }
 
 
@@ -209,15 +211,33 @@ document.addEventListener('DOMContentLoaded', (event) => {
         })
     }
 
+///// edit score functions
+async function editScore(score){
+    const options = {
+        method:"PUT",
+        body: JSON.stringify(score)
+    }
+    let response = await fetch(baseUrl + "users/" + user_id, options)
+    let data = await response.json
+    return data
+}
+
+const incrementScore = () => {
+    score +=1
+    editScore(score)
+}
+
+const decrementScore  = () => {
+    score -=1
+    editScore(score)
+}
+/////////
 
     
  
     fetchArticles()
     documentSubmit()
     documentClick()
-
-
-
 });
 
 
