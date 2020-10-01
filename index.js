@@ -34,6 +34,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
             createRating(score, raterId, reviewId)
         }
         else {
+            modifyRating(score, matchArr[0])
             console.log('instance found-patch score here')
             console.log(matchArr)
         }
@@ -143,14 +144,16 @@ document.addEventListener('DOMContentLoaded', (event) => {
         
         
         </div>
-        <div class="vote-btns" data-id="${article.custom_reviews[i].review_rating}">
+        <div class="vote-btns">
             <i class="up-vote fas fa-2x fa-sort-up"></i>
+            <div class="review-rating"> ${article.custom_reviews[i].review_rating}<span> /10 </span> </div>
             <i class="down-vote fas fa-2x fa-sort-down"></i>
         </div>
         `
         articleReviewsDiv.appendChild(review)
     }
     contentContainer.appendChild(articleReviewsDiv)
+
 }
     async function addReview(postId, userId, text) {
         const options = {
@@ -193,11 +196,38 @@ document.addEventListener('DOMContentLoaded', (event) => {
         let data = await response.json()
         console.log(data);
 
-        if (data.rater_id[0]) {
-            alert(data.rater_id[0])
-        }
+    }
 
-        // fetchSpecificArticle(postId)
+    async function modifyRating(score, rating_id) {
+        const options = {
+            method: "PATCH",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+        
+            },
+            body: JSON.stringify({
+                score
+            })
+        }
+        
+
+        let response = await fetch(baseUrl + 'ratings/' + rating_id, options);
+        let data = await response.json()
+        console.log(data);
+
+    }
+
+    const hideDropDowns = (condition) => {
+        const dropDownDiv = document.querySelector('#drop-downs')
+        
+        if (condition === true) {
+            dropDownDiv.classList.add('hide')
+        }
+        else if (condition === false) {
+            dropDownDiv.classList.remove('hide')
+        }
+        
     }
 
     const isLoggedIn = () => {
@@ -233,7 +263,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
 const loginPage = () => {
     const contentContainer = document.querySelector('.row')
-    
+    hideDropDowns(true)
     contentContainer.innerHTML = `
     <div class="wrapper fadeInDown">
   <div id="formContent">
@@ -243,8 +273,8 @@ const loginPage = () => {
 
  
     <form id="login-form">
-      <input type="text" id="login" class="fadeIn second" name="login" placeholder="login">
-      <input type="text" id="password" class="fadeIn third" name="login" placeholder="password">
+      <input type="text" id="login" class="login-input fadeIn second" name="login" placeholder="login">
+      <input type="password" id="password" class="login-input fadeIn third" name="login" placeholder="password">
       <input type="submit" class="fadeIn fourth" value="Log In">
     </form>
 
@@ -259,23 +289,24 @@ const loginPage = () => {
     
     const documentClick = () => {
         document.addEventListener('click', e => {
+            console.log(e.target)
             const contentContainer = document.querySelector('.row')
             if(e.target.parentNode.matches('.card')){
                 const cardDiv = e.target.parentNode
                 articleId = cardDiv.getAttribute('data-id')
                 console.log(articleId)
                 fetchSpecificArticle(articleId)
+                hideDropDowns(true)
                 
 
             }
             else if(e.target.matches('.home-btn')) {
-                contentContainer.innerHTML= ``
-                fetchArticles()
+                homePage()
                 changeActive(e.target)
             }
 
             else if(e.target.matches('.politics-btn')) {
-                
+                hideDropDowns(false)
                 contentContainer.innerHTML= ``
                 fetchArticleByTopic('politics')
                 changeActive(e.target)
@@ -283,7 +314,7 @@ const loginPage = () => {
             }
 
             else if(e.target.matches('.science-btn')) {
-                
+                hideDropDowns(false)
                 contentContainer.innerHTML= ``
                 fetchArticleByTopic('science')
                 changeActive(e.target)
@@ -291,6 +322,7 @@ const loginPage = () => {
             }
 
             else if(e.target.matches('.sports-btn')) {
+                hideDropDowns(false)
                 contentContainer.innerHTML= ``
                 fetchArticleByTopic('sports')
                 changeActive(e.target)
@@ -302,12 +334,19 @@ const loginPage = () => {
 
             else if(e.target.matches('.up-vote')){
                 const reviewId = e.target.parentNode.parentNode.getAttribute("data-id")
-                addScore(10, reviewId)
+                async function incrementScore() {
+                    await addScore(10, reviewId)
+                const postId = document.querySelector('.review-form').getAttribute("data-id")  
+                console.log(postId)
+                await fetchSpecificArticle(postId)}
+                incrementScore()
             }
 
             else if(e.target.matches('.down-vote')){
                 const reviewId = e.target.parentNode.parentNode.getAttribute("data-id")
-                addScore(10, reviewId)
+                const postId = document.querySelector('.review-form').getAttribute("data-id")  
+                addScore(0, reviewId)
+                fetchSpecificArticle(postId)
             }
             else if(e.target.matches('.logout-btn')) {
                 isLoggedIn()
@@ -317,9 +356,9 @@ const loginPage = () => {
         })
     }
 
+
     const addScore = (score, reviewId) => {
-        const raterId = demoUser.id 
-        const postId = document.querySelector('.review-form').getAttribute("data-id")        
+        const raterId = demoUser.id       
         
        checkRatings(raterId, reviewId, score)
         
@@ -348,33 +387,12 @@ const loginPage = () => {
         })
     }
 
-// ///// edit score functions
-// async function editScore(score, raterId, reviewId){
-//     const options = {
-//         method:"POST",
-//         body: JSON.stringify(score)
-//     }
-//     let response = await fetch(baseUrl + "users/" + user_id, options)
-//     let data = await response.json
-//     return data
-// }
-
-// const incrementScore = (score) => {
-//     score +=1
-//     editScore(score)
-// }
-
-// const decrementScore  = (score) => {
-//     score -=1
-//     editScore(score)
-// }
-// /////////
-
     
     const homePage = () => {
         const contentContainer = document.querySelector('.row')
         contentContainer.innerHTML = ``
         fetchArticles()
+        hideDropDowns(false)
     }
     
  
