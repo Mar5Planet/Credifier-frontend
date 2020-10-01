@@ -253,6 +253,14 @@ Navigation Bar */
     height: auto;
 }
 
+.profile-btn {
+    color: #184d47;
+}
+
+.profile-btn:hover {
+    color: #857a7a;
+}
+
 .media-body h5{
     font-weight: bold;
     font-size: 2rem;
@@ -586,3 +594,107 @@ Navigation Bar */
   *:focus {
       outline: none;
   } 
+
+  /* Profile Page */
+  .flip-card-front img {
+	border-radius: 100%;
+}
+
+.flip-card {
+  background-color: transparent;
+  width: 300px;
+  height: 300px;
+  perspective: 1000px;
+  border-radius: 100%;
+} 
+
+.flip-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  transition: transform 0.6s;
+  transform-style: preserve-3d;
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+  border-radius: 100%;
+
+}
+
+.flip-card:hover .flip-card-inner {
+
+  transform: rotateY(180deg);
+}
+
+.flip-card-front, .flip-card-back {
+
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+
+.flip-card-front {
+  background-color: rgb(206, 206, 206);
+  color: black;
+  border-radius: 100%;
+
+}
+
+.flip-card-back {
+  background-color: rgb(206, 206, 206);
+  color: black;
+  font-weight: 700;
+  transform: rotateY(180deg);
+  border-radius: 100%;
+  justify-content: center;
+
+}
+
+.profile-text {
+    display: block;
+    width: 100%;
+    justify-content: center;
+    margin: 5%;
+    text-align: center;
+    margin: auto;
+    padding: 0 20%;
+    
+}
+
+.flip-card-back p {
+    margin-top: 40%;
+    font-size: 1.5rem;
+}
+
+.flip-card-back span {
+    display: block;
+}
+
+.profile-text h1 {
+    font-weight: 700;
+    margin: 4% 0;
+}
+
+.profile-text h2 {
+    font-style: italic;
+    margin: 10% 0 8%;
+}
+.flip-card {
+    margin: 0 auto;
+    justify-content: center;
+}
+
+.profile-post {
+    font-size: 1.3rem;
+    font-weight: 500;
+    background-color: antiquewhite;
+  }
+  
+  .profile-post:hover {
+    background-color: cadetblue;
+  }
+
+  .alert-dark {
+      background-color: 
+  }

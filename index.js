@@ -8,6 +8,13 @@ document.addEventListener('DOMContentLoaded', (event) => {
     }
 
     baseUrl = 'http://localhost:3000/'
+
+    const fetchUser = userId => {
+        fetch(baseUrl + 'users/' + userId)
+        .then(res => res.json())
+        .then(data => renderUserProfile(data["data"]["attributes"]))
+    }
+
     const fetchArticles = () => {
         fetch(baseUrl + 'posts')
         .then(res => res.json())
@@ -138,7 +145,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
         
         <img src="${article.users[i].image_url}" class="${article.users[i].ranking} user-img mr-3" alt="...">
         <div class="media-body">
-        <h5 class="mt-0" data-id="${article.users[i].id}">${article.users[i].username}</h5>
+        <h5 class="mt-0 profile-btn" data-id="${article.users[i].id}">${article.users[i].username}</h5>
         <p>${article.reviews[i].text}</p>
         
         
@@ -155,6 +162,39 @@ document.addEventListener('DOMContentLoaded', (event) => {
     contentContainer.appendChild(articleReviewsDiv)
 
 }
+
+    const renderUserProfile = userObj => {
+        hideDropDowns(true)
+        const contentContainer = document.querySelector('.row')
+        contentContainer.innerHTML = `
+                <div class="flip-card ${userObj.ranking}">
+                <div class="flip-card-inner">
+                <div class="flip-card-front">
+                    <img src="${userObj.image_url}" alt="Avatar" style="width:300px;height:300px;">
+                </div>
+                <div class="flip-card-back">
+                    <p>Reviewer Score: <span>${userObj.my_score}</span></p> 
+                </div>
+                </div>
+            </div>
+            <div class= "profile-text">
+                <h1>${userObj.username}</h1> 
+                <h2>Reviewed Posts: </h2>
+            </div>
+         `
+
+        const profileTextDiv = document.querySelector('.profile-text')
+        const reviewedPosts = document.createElement('div')
+        for (i = 0; i < userObj.posts.length; i++) {
+            const reviewedPost = document.createElement('div')
+            reviewedPost.className = 'profile-post alert alert-dark'
+            reviewedPost.dataset.id = userObj.posts[i].id
+            reviewedPost.innerHTML = `${userObj.posts[i].title}`
+            reviewedPosts.appendChild(reviewedPost)
+        }
+        profileTextDiv.appendChild(reviewedPosts)
+    }
+
     async function addReview(postId, userId, text) {
         const options = {
             method: "POST",
@@ -353,6 +393,16 @@ const loginPage = () => {
                 homePage()
                 
             }
+
+            else if(e.target.matches(".profile-btn")) {
+                const userId = e.target.getAttribute("data-id")
+                fetchUser(userId)
+            }
+
+            else if(e.target.matches(".profile-post")) {
+                const postId = e.target.getAttribute('data-id')
+                fetchSpecificArticle(postId)
+            }
         })
     }
 
@@ -401,7 +451,9 @@ const loginPage = () => {
     fetchArticles()
     documentSubmit()
     documentClick()
-    // checkRatings(raterId, reviewId)
+    fetchUser(1)
+    
+    
 
     
 });
