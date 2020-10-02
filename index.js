@@ -134,14 +134,19 @@ document.addEventListener('DOMContentLoaded', (event) => {
     
     
     for (i = 0; i < article.reviews.length; i++) {
+        const reviewObj = article.reviews[i]
+        const reviewUserId = reviewObj.user_id
+
+        const user = article.users.filter(user => user.id === reviewUserId)[0]
+
         const review = document.createElement('div')
         review.className = "media"
         review.dataset.id = article.reviews[i].id
         review.innerHTML = `
         
-        <img src="${article.users[i].image_url}" class="${article.user_rankings[i]} user-img mr-3" alt="...">
+        <img src="${user.image_url}" class="${article.user_rankings[i]} user-img mr-3" alt="...">
         <div class="media-body">
-        <h5 class="mt-0 profile-btn" data-id="${article.users[i].id}">${article.users[i].username}</h5>
+        <h5 class="mt-0 profile-btn" data-id="${user.id}">${user.username}</h5>
         <p>${article.reviews[i].text}</p>
         
         
@@ -369,6 +374,7 @@ const loginPage = () => {
             else if(e.target.matches('.up-vote')){
                 const reviewId = e.target.parentNode.parentNode.getAttribute("data-id")
                 
+                debugger
                 addScore(10, reviewId)
                 const postId = document.querySelector('.review-form').getAttribute("data-id")  
         
