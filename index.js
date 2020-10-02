@@ -143,7 +143,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
         review.dataset.id = article.reviews[i].id
         review.innerHTML = `
         
-        <img src="${article.users[i].image_url}" class="${article.users[i].ranking} user-img mr-3" alt="...">
+        <img src="${article.users[i].image_url}" class="${article.user_rankings[i]} user-img mr-3" alt="...">
         <div class="media-body">
         <h5 class="mt-0 profile-btn" data-id="${article.users[i].id}">${article.users[i].username}</h5>
         <p>${article.reviews[i].text}</p>
@@ -153,7 +153,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
         </div>
         <div class="vote-btns">
             <i class="up-vote fas fa-2x fa-sort-up"></i>
-            <div class="review-rating"> ${article.custom_reviews[i].review_rating}<span> /10 </span> </div>
+            <div class="review-rating"> ${article.custom_reviews[i]}<span> /10 </span> </div>
             <i class="down-vote fas fa-2x fa-sort-down"></i>
         </div>
         `
@@ -374,19 +374,25 @@ const loginPage = () => {
 
             else if(e.target.matches('.up-vote')){
                 const reviewId = e.target.parentNode.parentNode.getAttribute("data-id")
-                async function incrementScore() {
-                    await addScore(10, reviewId)
+                
+                addScore(10, reviewId)
                 const postId = document.querySelector('.review-form').getAttribute("data-id")  
                 console.log(postId)
-                await fetchSpecificArticle(postId)}
-                incrementScore()
+        
+                setTimeout(() => {
+                    fetchSpecificArticle(postId)
+                }, 1000);
+                
             }
 
             else if(e.target.matches('.down-vote')){
                 const reviewId = e.target.parentNode.parentNode.getAttribute("data-id")
                 const postId = document.querySelector('.review-form').getAttribute("data-id")  
                 addScore(0, reviewId)
-                fetchSpecificArticle(postId)
+                function resetPage() {
+                    fetchSpecificArticle(postId)
+                }
+                setTimeout(resetPage, 1000)
             }
             else if(e.target.matches('.logout-btn')) {
                 isLoggedIn()
@@ -451,7 +457,6 @@ const loginPage = () => {
     fetchArticles()
     documentSubmit()
     documentClick()
-    fetchUser(1)
     
     
 

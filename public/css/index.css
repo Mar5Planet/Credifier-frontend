@@ -259,6 +259,7 @@ Navigation Bar */
 
 .profile-btn:hover {
     color: #857a7a;
+    cursor: pointer;
 }
 
 .media-body h5{
@@ -290,10 +291,12 @@ Navigation Bar */
 
 .up-vote:hover {
     color: green;
+    cursor: pointer;
 }
 
 .down-vote:hover {
     color: red;
+    cursor: pointer;
 }
 
 .review-rating {
@@ -301,19 +304,19 @@ Navigation Bar */
 }
 .green {
     border: 10px solid green;
-    box-shadow: 0 0 10px #000000;
+    box-shadow: 0 0 10px #222222b7;
     
 }
 
 
 .red {
     border: 10px solid red;
-    box-shadow: 0 0 10px #000000;
+    box-shadow: 0 0 10px #222222b7;
 }
 
 .yellow {
     border: 10px solid yellow;
-    box-shadow: 0 0 10px #000000;
+    box-shadow: 0 0 10px #222222b7;
 }
 
 /* Footer Section */
@@ -680,6 +683,7 @@ Navigation Bar */
     font-style: italic;
     margin: 10% 0 8%;
 }
+
 .flip-card {
     margin: 0 auto;
     justify-content: center;
@@ -688,13 +692,15 @@ Navigation Bar */
 .profile-post {
     font-size: 1.3rem;
     font-weight: 500;
-    background-color: antiquewhite;
-  }
+    background-color: #212121;
+    color: white;
+}
   
-  .profile-post:hover {
+.profile-post:hover {
     background-color: cadetblue;
-  }
+    cursor: pointer;
+}
 
-  .alert-dark {
-      background-color: 
-  }
+.alert-dark {
+    background-color: 
+}
