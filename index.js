@@ -1,7 +1,5 @@
-// console.log('DOM fully loaded and parsed');
+
 document.addEventListener('DOMContentLoaded', (event) => {
-    console.log('DOM fully loaded and parsed');
-    //const cards = document.getElementsByClassName("card")
     let userLoggedIn = false;
     let demoUser = {
         "id": "1"
@@ -42,8 +40,6 @@ document.addEventListener('DOMContentLoaded', (event) => {
         }
         else {
             modifyRating(score, matchArr[0])
-            console.log('instance found-patch score here')
-            console.log(matchArr)
         }
 
     }
@@ -173,7 +169,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
                     <img src="${userObj.image_url}" alt="Avatar" style="width:300px;height:300px;">
                 </div>
                 <div class="flip-card-back">
-                    <p>Reviewer Score: <span>${userObj.my_score}</span></p> 
+                    <p>Credibility Score: <span>${userObj.my_score}</span></p> 
                 </div>
                 </div>
             </div>
@@ -234,7 +230,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
         let response = await fetch(baseUrl + 'ratings', options);
         let data = await response.json()
-        console.log(data);
+        
 
     }
 
@@ -254,7 +250,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
         let response = await fetch(baseUrl + 'ratings/' + rating_id, options);
         let data = await response.json()
-        console.log(data);
+        
 
     }
 
@@ -295,7 +291,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
     const changeActive = activeBtn => {
         const activeElements = document.querySelectorAll('.active')
-        console.log(activeElements)
+        
         activeElements.forEach(element => {element.classList.remove('active')})
         activeBtn.classList.add('active')
     }
@@ -329,12 +325,10 @@ const loginPage = () => {
     
     const documentClick = () => {
         document.addEventListener('click', e => {
-            console.log(e.target)
             const contentContainer = document.querySelector('.row')
             if(e.target.parentNode.matches('.card')){
                 const cardDiv = e.target.parentNode
                 articleId = cardDiv.getAttribute('data-id')
-                console.log(articleId)
                 fetchSpecificArticle(articleId)
                 hideDropDowns(true)
                 
@@ -377,7 +371,6 @@ const loginPage = () => {
                 
                 addScore(10, reviewId)
                 const postId = document.querySelector('.review-form').getAttribute("data-id")  
-                console.log(postId)
         
                 setTimeout(() => {
                     fetchSpecificArticle(postId)
