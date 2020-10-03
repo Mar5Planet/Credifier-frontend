@@ -248,9 +248,9 @@ Navigation Bar */
 
 .user-img {
     border-radius: 100%;
-    width: 250px;
+    width: 300px;
     margin-right: 3rem !important;
-    height: auto;
+    height: 300px;
 }
 
 .profile-btn {

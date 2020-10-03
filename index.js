@@ -133,28 +133,28 @@ document.addEventListener('DOMContentLoaded', (event) => {
     articleReviewsDiv.className = 'reviews-div'
     
     
-    for (i = 0; i < article.reviews.length; i++) {
-        const reviewObj = article.reviews[i]
+    for (i = 0; i < article.custom_reviews.length; i++) {
+        const reviewObj = article.custom_reviews[i]
         const reviewUserId = reviewObj.user_id
 
-        const user = article.users.filter(user => user.id === reviewUserId)[0]
+        const user = article.custom_users.filter(user => user.id === reviewUserId)[0]
 
         const review = document.createElement('div')
         review.className = "media"
-        review.dataset.id = article.reviews[i].id
+        review.dataset.id = reviewObj.id
         review.innerHTML = `
         
-        <img src="${user.image_url}" class="${article.user_rankings[i]} user-img mr-3" alt="...">
+        <img src="${user.image_url}" class="${user.user_ranking} user-img mr-3" alt="...">
         <div class="media-body">
         <h5 class="mt-0 profile-btn" data-id="${user.id}">${user.username}</h5>
-        <p>${article.reviews[i].text}</p>
+        <p>${reviewObj.text}</p>
         
         
         
         </div>
         <div class="vote-btns">
             <i class="up-vote fas fa-2x fa-sort-up"></i>
-            <div class="review-rating"> ${article.custom_reviews[i]}<span> /10 </span> </div>
+            <div class="review-rating"> ${reviewObj.review_rating}<span> /10 </span> </div>
             <i class="down-vote fas fa-2x fa-sort-down"></i>
         </div>
         `
@@ -374,7 +374,6 @@ const loginPage = () => {
             else if(e.target.matches('.up-vote')){
                 const reviewId = e.target.parentNode.parentNode.getAttribute("data-id")
                 
-                debugger
                 addScore(10, reviewId)
                 const postId = document.querySelector('.review-form').getAttribute("data-id")  
         
