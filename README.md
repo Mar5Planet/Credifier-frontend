@@ -10,5 +10,5 @@ rails db:create db:migrate db:seed
 rails s - run server 
 
 # frontend
-go live on application.js file
+go live on index.js file
 
